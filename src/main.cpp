@@ -5,6 +5,10 @@
 
 #define DRUMPAD_ANALOG_THRESHOLD 200
 #define MIDI_START_STOP_DELAY 5
+#define PAD1 14
+#define PAD2 15
+#define PAD3 16
+#define PAD4 17
 
 // See http://www.vlsi.fi/fileadmin/datasheets/vs1053.pdf Pg 31
 #define VS1053_BANK_DEFAULT 0x00
@@ -33,6 +37,11 @@ HardwareSerial Serial1(2);
 #elif defined(ESP8266)
 #define VS1053_MIDI Serial
 #endif
+
+volatile bool padOneOn = 0;
+volatile bool padTwoOn = 0;
+volatile bool padThreeOn = 0;
+volatile bool padFourOn = 0;
 
 void midiSetInstrument(uint8_t chan, uint8_t inst)
 {
@@ -100,6 +109,19 @@ void midiNoteOff(uint8_t chan, uint8_t n, uint8_t vel)
   VS1053_MIDI.write(vel);
 }
 
+void padOne (){
+  padOneOn = 1;
+}
+void padTwo (){
+  padTwoOn = 1;
+}
+void padThree (){
+  padThreeOn = 1;
+}
+void padFour (){
+  padFourOn = 1;
+}
+
 void setup()
 {
   delay(1000);
@@ -115,17 +137,42 @@ void setup()
   midiSetChannelVolume(0, 127);
 
   midiSetInstrument(0, VS1053_GM1_SNARE);
+
+  attachInterrupt(digitalPinToInterrupt(PAD1), padOne, HIGH);
+  attachInterrupt(digitalPinToInterrupt(PAD2), padTwo, HIGH);
+  attachInterrupt(digitalPinToInterrupt(PAD3), padThree, HIGH);
+  attachInterrupt(digitalPinToInterrupt(PAD4), padFour, HIGH);
 }
 
 void loop()
 {
-  if (analogRead(A1) > DRUMPAD_ANALOG_THRESHOLD)
+  if (padOneOn)
   {
-    midiNoteOn(0, 40, 127);
-    delay(MIDI_START_STOP_DELAY);
-    midiNoteOff(0, 40, 127);
-    delay(MIDI_START_STOP_DELAY);
+    midiNoteOn(0, VS1053_ACOUSTIC_BASS_DRUM, 127);
+    padOneOn = 0;
   }
+  if (padTwoOn)
+  {
+    midiNoteOn(0, VS1053_ACOUSTIC_SNARE, 127);
+    padTwoOn = 0;
+  }
+  if (padThreeOn)
+  {
+    midiNoteOn(0, VS1053_CLOSED_HI_HAT, 127);
+    padThreeOn = 0;
+  }
+  if (padFourOn)
+  {
+    midiNoteOn(0, VS1053_CRASH_CYMBAL_1, 127);
+    padFourOn = 0;
+  }
+
+  //midiNoteOff(0, VS1053_ACOUSTIC_BASS_DRUM, 127);
+ // midiNoteOff(0, VS1053_ACOUSTIC_SNARE, 127);
+ // midiNoteOff(0, VS1053_CLOSED_HI_HAT, 127);
+ // midiNoteOff(0, VS1053_CRASH_CYMBAL_1, 127);
+
+ // delay(250);
   /*
     for (uint8_t i = 27; i < 88; i++)
   {
