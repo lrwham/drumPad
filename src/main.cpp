@@ -167,6 +167,8 @@ void loop()
     padFourOn = 0;
   }
 
+  delay(10);
+
   //midiNoteOff(0, VS1053_ACOUSTIC_BASS_DRUM, 127);
  // midiNoteOff(0, VS1053_ACOUSTIC_SNARE, 127);
  // midiNoteOff(0, VS1053_CLOSED_HI_HAT, 127);
