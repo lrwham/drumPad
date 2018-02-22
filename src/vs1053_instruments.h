@@ -1,3 +1,9 @@
+#include <string.h>
+
+#define NUM_INSTRUMENTS 99
+#define SIMPLE_NAME_LENGTH 4
+#define PRETTY_NAME_LENGTH 16
+
 #define VS1053_HIGH_Q 27
 #define VS1053_SLAP 28
 #define VS1053_SCRATCH_PUSH 29 // EXC7
@@ -42,15 +48,15 @@
 #define VS1053_LOW_AGOGO 68
 #define VS1053_CABASA 69
 #define VS1053_MARACAS 70
-#define VS1053_SHORT_WHISTLE 71 //EXC2
+#define VS1053_SHORT_WHISTLE 71  //EXC2
 #define VS1053_LONG_WHISTLE 2 72 // EXC2
-#define VS1053_SHORT_GUIRO 73 // EXC3
-#define VS1053_LONG_GUIRO 74 // EXC3
+#define VS1053_SHORT_GUIRO 73    // EXC3
+#define VS1053_LONG_GUIRO 74     // EXC3
 #define VS1053_CLAVES 75
 #define VS1053_HI_WOOD_BLOCK 76
 #define VS1053_LOW_WOOD_BLOCK 77
-#define VS1053_MUTE_CUICA 78 // EXC4
-#define VS1053_OPEN_CUICA 79 // EXC4
+#define VS1053_MUTE_CUICA 78    // EXC4
+#define VS1053_OPEN_CUICA 79    // EXC4
 #define VS1053_MUTE_TRIANGLE 80 // EXC5
 #define VS1053_OPEN_TRIANGLE 81 // EXC5
 #define VS1053_SHAKER 82
@@ -59,3 +65,15 @@
 #define VS1053_CASTANETS 85
 #define VS1053_MUTE_SURDO 86 // EXC6
 #define VS1053_OPEN_SURDO 87 // EXC6
+
+struct VS1053instruments
+{
+    int id;
+    String simpleName;
+    String prettyName;
+};
+
+struct VS1053instruments instrument[NUM_INSTRUMENTS];
+
+instrument[0].id = 0;
+instrument[0].simpleName = 'snar';
