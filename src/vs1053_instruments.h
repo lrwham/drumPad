@@ -1,3 +1,6 @@
+#ifndef VS1053_INSTRUMENTS_H
+#define VS1053_INSTRUMENTS_H
+
 #define NUM_MELODIC_INSTRUMENTS 99
 #define NUM_PERCUSSION_INSTRUMENTS 61
 #define INDEX_START_PERCUSSION 27
@@ -99,3 +102,5 @@ struct InstrumentVS1053 percussionInstruments[NUM_PERCUSSION_INSTRUMENTS] = {
     {VS1053_CRASH_CYMBAL_1, "cras", "Crash Cymbal 1"}
 
 };
+
+#endif //VS1053_INSTRUMENTS_H

@@ -1,35 +1,18 @@
 #include <Adafruit_VS1053.h>
 #include <vs1053_instruments.h>
+#include <vs1053_registers.h>
+//#include <midi.h>
+
 
 #define SERIAL_DEBUG_BAUD 9600
-
-// Solder closed jumper on bottom!
+#define MIDI_BAUD 31250
 
 #define DRUMPAD_ANALOG_THRESHOLD 200
 #define MIDI_START_STOP_DELAY 5
-#define PAD1 14
-#define PAD2 15
-#define PAD3 16
-#define PAD4 17
-
-// See http://www.vlsi.fi/fileadmin/datasheets/vs1053.pdf Pg 31
-#define VS1053_BANK_DEFAULT 0x00
-#define VS1053_BANK_DRUMS1 0x78
-#define VS1053_BANK_DRUMS2 0x7F
-#define VS1053_BANK_MELODY 0x79
-
-// See http://www.vlsi.fi/fileadmin/datasheets/vs1053.pdf Pg 32 for more!
-#define VS1053_GM1_OCARINA 80
-#define VS1053_GM1_PIANO 1
-
-#define VS1053_GM1_SNARE 38
-
-#define MIDI_NOTE_ON 0x90
-#define MIDI_NOTE_OFF 0x80
-#define MIDI_CHAN_MSG 0xB0
-#define MIDI_CHAN_BANK 0x00
-#define MIDI_CHAN_VOLUME 0x07
-#define MIDI_CHAN_PROGRAM 0xC0
+#define PAD1_PIN 14
+#define PAD2_PIN 15
+#define PAD3_PIN 16
+#define PAD4_PIN 17
 
 #if defined(__AVR_ATmega32U4__) || defined(ARDUINO_SAMD_FEATHER_M0) || defined(TEENSYDUINO) || defined(ARDUINO_STM32_FEATHER)
 #define VS1053_MIDI Serial1
@@ -111,19 +94,19 @@ void midiNoteOff(uint8_t chan, uint8_t n, uint8_t vel)
   VS1053_MIDI.write(vel);
 }
 
-void padOne()
+void padOneISR()
 {
   padOneOn = 1;
 }
-void padTwo()
+void padTwoISR()
 {
   padTwoOn = 1;
 }
-void padThree()
+void padThreeISR()
 {
   padThreeOn = 1;
 }
-void padFour()
+void padFourISR()
 {
   padFourOn = 1;
 }
@@ -136,7 +119,7 @@ void setup()
 
   Serial.println("VS1053 MIDI test");
 
-  VS1053_MIDI.begin(31250); // MIDI uses a 'strange baud rate'
+  VS1053_MIDI.begin(MIDI_BAUD); // MIDI uses a 'strange baud rate'
 
   midiSetChannelBank(0, VS1053_BANK_DRUMS2);
 
@@ -144,10 +127,10 @@ void setup()
 
   midiSetInstrument(0, VS1053_GM1_SNARE);
 
-  attachInterrupt(digitalPinToInterrupt(PAD1), padOne, RISING);
-  attachInterrupt(digitalPinToInterrupt(PAD2), padTwo, RISING);
-  attachInterrupt(digitalPinToInterrupt(PAD3), padThree, RISING);
-  attachInterrupt(digitalPinToInterrupt(PAD4), padFour, RISING);
+  attachInterrupt(digitalPinToInterrupt(PAD1_PIN), padOneISR, RISING);
+  attachInterrupt(digitalPinToInterrupt(PAD2_PIN), padTwoISR, RISING);
+  attachInterrupt(digitalPinToInterrupt(PAD3_PIN), padThreeISR, RISING);
+  attachInterrupt(digitalPinToInterrupt(PAD4_PIN), padFourISR, RISING);
 }
 
 void loop()
