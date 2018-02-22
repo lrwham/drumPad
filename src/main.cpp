@@ -1,6 +1,8 @@
 #include <Adafruit_VS1053.h>
 #include <vs1053_instruments.h>
 
+#define SERIAL_DEBUG_BAUD 9600
+
 // Solder closed jumper on bottom!
 
 #define DRUMPAD_ANALOG_THRESHOLD 200
@@ -109,16 +111,20 @@ void midiNoteOff(uint8_t chan, uint8_t n, uint8_t vel)
   VS1053_MIDI.write(vel);
 }
 
-void padOne (){
+void padOne()
+{
   padOneOn = 1;
 }
-void padTwo (){
+void padTwo()
+{
   padTwoOn = 1;
 }
-void padThree (){
+void padThree()
+{
   padThreeOn = 1;
 }
-void padFour (){
+void padFour()
+{
   padFourOn = 1;
 }
 
@@ -126,7 +132,7 @@ void setup()
 {
   delay(1000);
 
-  Serial.begin(115200);
+  Serial.begin(SERIAL_DEBUG_BAUD);
 
   Serial.println("VS1053 MIDI test");
 
@@ -138,10 +144,10 @@ void setup()
 
   midiSetInstrument(0, VS1053_GM1_SNARE);
 
-  attachInterrupt(digitalPinToInterrupt(PAD1), padOne, HIGH);
-  attachInterrupt(digitalPinToInterrupt(PAD2), padTwo, HIGH);
-  attachInterrupt(digitalPinToInterrupt(PAD3), padThree, HIGH);
-  attachInterrupt(digitalPinToInterrupt(PAD4), padFour, HIGH);
+  attachInterrupt(digitalPinToInterrupt(PAD1), padOne, RISING);
+  attachInterrupt(digitalPinToInterrupt(PAD2), padTwo, RISING);
+  attachInterrupt(digitalPinToInterrupt(PAD3), padThree, RISING);
+  attachInterrupt(digitalPinToInterrupt(PAD4), padFour, RISING);
 }
 
 void loop()
@@ -149,32 +155,40 @@ void loop()
   if (padOneOn)
   {
     midiNoteOn(0, VS1053_ACOUSTIC_BASS_DRUM, 127);
+    Serial.print("Percussion: ");
+    Serial.println(percussionInstruments[VS1053_ACOUSTIC_BASS_DRUM - INDEX_START_PERCUSSION].prettyName);
     padOneOn = 0;
   }
   if (padTwoOn)
   {
     midiNoteOn(0, VS1053_ACOUSTIC_SNARE, 127);
+    Serial.print("Percussion: ");
+    Serial.println(percussionInstruments[VS1053_ACOUSTIC_SNARE - INDEX_START_PERCUSSION].prettyName);
     padTwoOn = 0;
   }
   if (padThreeOn)
   {
     midiNoteOn(0, VS1053_CLOSED_HI_HAT, 127);
+    Serial.print("Percussion: ");
+    Serial.println(percussionInstruments[VS1053_CLOSED_HI_HAT - INDEX_START_PERCUSSION].prettyName);
     padThreeOn = 0;
   }
   if (padFourOn)
   {
     midiNoteOn(0, VS1053_CRASH_CYMBAL_1, 127);
+    Serial.print("Percussion: ");
+    Serial.println(percussionInstruments[VS1053_CRASH_CYMBAL_1 - INDEX_START_PERCUSSION].prettyName);
     padFourOn = 0;
   }
 
   delay(10);
 
   //midiNoteOff(0, VS1053_ACOUSTIC_BASS_DRUM, 127);
- // midiNoteOff(0, VS1053_ACOUSTIC_SNARE, 127);
- // midiNoteOff(0, VS1053_CLOSED_HI_HAT, 127);
- // midiNoteOff(0, VS1053_CRASH_CYMBAL_1, 127);
+  // midiNoteOff(0, VS1053_ACOUSTIC_SNARE, 127);
+  // midiNoteOff(0, VS1053_CLOSED_HI_HAT, 127);
+  // midiNoteOff(0, VS1053_CRASH_CYMBAL_1, 127);
 
- // delay(250);
+  // delay(250);
   /*
     for (uint8_t i = 27; i < 88; i++)
   {
