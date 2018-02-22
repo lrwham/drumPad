@@ -1,6 +1,6 @@
 #include <midi.h>
 #include <Arduino.h>
-#include <Adafruit_VS1053.h>
+//#include <Adafruit_VS1053.h>
 #include <vs1053_registers.h>
 
 
