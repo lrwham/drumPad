@@ -72,8 +72,8 @@ struct InstrumentVS1053
 };
 
 const struct InstrumentVS1053 instruments[NUM_INSTRUMENTS] = {
-    {36, "snar", "Snare Drum"},
-    {37, "snar", "Snare Drum"},
-    {38, "snar", "Snare Drum"},
-    {39, "snar", "Snare Drum"}
+    {36, "basd", "Bass Drum"},
+    {37, "side", "Side Stick"},
+    {38, "snar", "Acoustic Snare Drum"},
+    {39, "clap", "Hand Clap"}
 };
