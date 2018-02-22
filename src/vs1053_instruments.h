@@ -1,8 +1,4 @@
-#include <string>
-
 #define NUM_INSTRUMENTS 99
-#define SIMPLE_NAME_LENGTH 4
-#define PRETTY_NAME_LENGTH 16
 
 #define VS1053_HIGH_Q 27
 #define VS1053_SLAP 28
@@ -66,16 +62,18 @@
 #define VS1053_MUTE_SURDO 86 // EXC6
 #define VS1053_OPEN_SURDO 87 // EXC6
 
-struct Instrument
+using namespace std;
+
+struct InstrumentVS1053
 {
     int id;
-    string simpleName;
-    string prettyName;
+    String simpleName;
+    String prettyName;
 };
 
-Instrument instruments[NUM_INSTRUMENTS]; //[NUM_INSTRUMENTS];
-
-instruments[0] = {36,"snar","Snare Drum"};
-instruments[1] = {37,"snar","Snare Drum"};
-instruments[2] = {38,"snar","Snare Drum"};
-instruments[3] = {39,"snar","Snare Drum"};
+const struct InstrumentVS1053 instruments[NUM_INSTRUMENTS] = {
+    {36, "snar", "Snare Drum"},
+    {37, "snar", "Snare Drum"},
+    {38, "snar", "Snare Drum"},
+    {39, "snar", "Snare Drum"}
+};
