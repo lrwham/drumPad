@@ -1,4 +1,4 @@
-#include <string.h>
+#include <string>
 
 #define NUM_INSTRUMENTS 99
 #define SIMPLE_NAME_LENGTH 4
@@ -66,14 +66,16 @@
 #define VS1053_MUTE_SURDO 86 // EXC6
 #define VS1053_OPEN_SURDO 87 // EXC6
 
-struct VS1053instruments
+struct Instrument
 {
     int id;
-    String simpleName;
-    String prettyName;
+    string simpleName;
+    string prettyName;
 };
 
-struct VS1053instruments instrument[NUM_INSTRUMENTS];
+Instrument instruments[NUM_INSTRUMENTS]; //[NUM_INSTRUMENTS];
 
-instrument[0].id = 0;
-instrument[0].simpleName = 'snar';
+instruments[0] = {36,"snar","Snare Drum"};
+instruments[1] = {37,"snar","Snare Drum"};
+instruments[2] = {38,"snar","Snare Drum"};
+instruments[3] = {39,"snar","Snare Drum"};
