@@ -1,6 +1,8 @@
 #ifndef VS1053_INSTRUMENTS_H
 #define VS1053_INSTRUMENTS_H
 
+#include <Arduino.h>
+
 #define NUM_MELODIC_INSTRUMENTS 99
 #define NUM_PERCUSSION_INSTRUMENTS 61
 #define INDEX_START_PERCUSSION 27
@@ -72,34 +74,33 @@ using namespace std;
 struct InstrumentVS1053
 {
     int id;
-    String simpleName;
     String prettyName;
 };
 
 struct InstrumentVS1053 percussionInstruments[NUM_PERCUSSION_INSTRUMENTS] = {
-    {VS1053_HIGH_Q, "higq", "High Q"},
-    {VS1053_SLAP, "slap", "Slap"},
-    {VS1053_SCRATCH_PUSH, "scra", "Scratch Push EXC7"},
-    {VS1053_SCRATCH_PULL, "scra", "Scratch Pull EXC7"},
-    {VS1053_STICKS, "stic", "Sticks"},
-    {VS1053_SQUARE_CLICK, "sqcl", "Square Cick"},
-    {VS1053_METRONOME_CLICK, "metc", "Metronome Click"},
-    {VS1053_METRONOME_BELL, "metb", "Metronome Bell"},
-    {VS1053_ACOUSTIC_BASS_DRUM, "basd", "Acoustic Bass Drum"},
-    {VS1053_BASS_DRUM_1, "basd", "Bass Drum 1"},
-    {VS1053_SIDE_STICK, "side", "Side Stick"},
-    {VS1053_ACOUSTIC_SNARE, "snar", "Acoustic Snare Drum"},
-    {VS1053_HAND_CLAP, "clap", "Hand Clap"},
-    {VS1053_ELECTRIC_SNARE, "esna", "Electric Snare Drum"},
-    {VS1053_LOW_FLOOR_TOM, "ftom", "Low Floor Tom"},
-    {VS1053_CLOSED_HI_HAT, "hiht", "Closed Hi Hat"},
-    {VS1053_HIGH_FLOOR_TOM, "ftom", "High Floor Tom"},
-    {VS1053_PEDAL_HI_HAT, "hiht", "Pedal Hi Hat"}, // EXC1
-    {VS1053_LOW_TOM, "lotm", "Low Tom"},
-    {VS1053_OPEN_HI_HAT, "opht", "Open Hi Hat"}, // EXC1
-    {VS1053_LOW_MID_TOM, "lmtm", "Low Mid Tom"},
-    {VS1053_HIGH_MID_TOM, "hmtm", "High Mid Tom"},
-    {VS1053_CRASH_CYMBAL_1, "cras", "Crash Cymbal 1"}
+    {VS1053_HIGH_Q, "High Q"},
+    {VS1053_SLAP, "Slap"},
+    {VS1053_SCRATCH_PUSH, "Scratch Push EXC7"},
+    {VS1053_SCRATCH_PULL, "Scratch Pull EXC7"},
+    {VS1053_STICKS, "Sticks"},
+    {VS1053_SQUARE_CLICK, "Square Cick"},
+    {VS1053_METRONOME_CLICK, "Metronome Click"},
+    {VS1053_METRONOME_BELL, "Metronome Bell"},
+    {VS1053_ACOUSTIC_BASS_DRUM, "Acoustic Bass Drum"},
+    {VS1053_BASS_DRUM_1, "Bass Drum 1"},
+    {VS1053_SIDE_STICK, "Side Stick"},
+    {VS1053_ACOUSTIC_SNARE, "Acoustic Snare Drum"},
+    {VS1053_HAND_CLAP, "Hand Clap"},
+    {VS1053_ELECTRIC_SNARE, "Electric Snare Drum"},
+    {VS1053_LOW_FLOOR_TOM, "Low Floor Tom"},
+    {VS1053_CLOSED_HI_HAT, "Closed Hi Hat"},
+    {VS1053_HIGH_FLOOR_TOM, "High Floor Tom"},
+    {VS1053_PEDAL_HI_HAT, "Pedal Hi Hat"}, // EXC1
+    {VS1053_LOW_TOM, "Low Tom"},
+    {VS1053_OPEN_HI_HAT, "Open Hi Hat"}, // EXC1
+    {VS1053_LOW_MID_TOM, "Low Mid Tom"},
+    {VS1053_HIGH_MID_TOM, "High Mid Tom"},
+    {VS1053_CRASH_CYMBAL_1, "Crash Cymbal 1"}
 
 };
 

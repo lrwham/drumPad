@@ -1,8 +1,7 @@
-#include <Adafruit_VS1053.h>
+//#include <Adafruit_VS1053.h>
 #include <vs1053_instruments.h>
 #include <vs1053_registers.h>
-//#include <midi.h>
-
+#include <vs1053_midi.h>
 
 #define SERIAL_DEBUG_BAUD 9600
 #define MIDI_BAUD 31250
@@ -27,72 +26,6 @@ volatile bool padOneOn = 0;
 volatile bool padTwoOn = 0;
 volatile bool padThreeOn = 0;
 volatile bool padFourOn = 0;
-
-void midiSetInstrument(uint8_t chan, uint8_t inst)
-{
-  if (chan > 15)
-    return;
-  inst--; // page 32 has instruments starting with 1 not 0 :(
-  if (inst > 127)
-    return;
-
-  VS1053_MIDI.write(MIDI_CHAN_PROGRAM | chan);
-  //delay(10);
-  VS1053_MIDI.write(inst);
-  //delay(10);
-}
-
-void midiSetChannelVolume(uint8_t chan, uint8_t vol)
-{
-  if (chan > 15)
-    return;
-  if (vol > 127)
-    return;
-
-  VS1053_MIDI.write(MIDI_CHAN_MSG | chan);
-  VS1053_MIDI.write(MIDI_CHAN_VOLUME);
-  VS1053_MIDI.write(vol);
-}
-
-void midiSetChannelBank(uint8_t chan, uint8_t bank)
-{
-  if (chan > 15)
-    return;
-  if (bank > 127)
-    return;
-
-  VS1053_MIDI.write(MIDI_CHAN_MSG | chan);
-  VS1053_MIDI.write((uint8_t)MIDI_CHAN_BANK);
-  VS1053_MIDI.write(bank);
-}
-
-void midiNoteOn(uint8_t chan, uint8_t n, uint8_t vel)
-{
-  if (chan > 15)
-    return;
-  if (n > 127)
-    return;
-  if (vel > 127)
-    return;
-
-  VS1053_MIDI.write(MIDI_NOTE_ON | chan);
-  VS1053_MIDI.write(n);
-  VS1053_MIDI.write(vel);
-}
-
-void midiNoteOff(uint8_t chan, uint8_t n, uint8_t vel)
-{
-  if (chan > 15)
-    return;
-  if (n > 127)
-    return;
-  if (vel > 127)
-    return;
-
-  VS1053_MIDI.write(MIDI_NOTE_OFF | chan);
-  VS1053_MIDI.write(n);
-  VS1053_MIDI.write(vel);
-}
 
 void padOneISR()
 {
@@ -121,11 +54,11 @@ void setup()
 
   VS1053_MIDI.begin(MIDI_BAUD); // MIDI uses a 'strange baud rate'
 
-  midiSetChannelBank(0, VS1053_BANK_DRUMS2);
+  midiSetChannelBank(0, VS1053_BANK_DRUMS2, VS1053_MIDI);
 
-  midiSetChannelVolume(0, 127);
+  midiSetChannelVolume(0, 127, VS1053_MIDI);
 
-  midiSetInstrument(0, VS1053_GM1_SNARE);
+  midiSetInstrument(0, VS1053_GM1_SNARE, VS1053_MIDI);
 
   attachInterrupt(digitalPinToInterrupt(PAD1_PIN), padOneISR, RISING);
   attachInterrupt(digitalPinToInterrupt(PAD2_PIN), padTwoISR, RISING);
@@ -137,28 +70,28 @@ void loop()
 {
   if (padOneOn)
   {
-    midiNoteOn(0, VS1053_ACOUSTIC_BASS_DRUM, 127);
+    midiNoteOn(0, VS1053_ACOUSTIC_BASS_DRUM, 127, VS1053_MIDI);
     Serial.print("Percussion: ");
     Serial.println(percussionInstruments[VS1053_ACOUSTIC_BASS_DRUM - INDEX_START_PERCUSSION].prettyName);
     padOneOn = 0;
   }
   if (padTwoOn)
   {
-    midiNoteOn(0, VS1053_ACOUSTIC_SNARE, 127);
+    midiNoteOn(0, VS1053_ACOUSTIC_SNARE, 127, VS1053_MIDI);
     Serial.print("Percussion: ");
     Serial.println(percussionInstruments[VS1053_ACOUSTIC_SNARE - INDEX_START_PERCUSSION].prettyName);
     padTwoOn = 0;
   }
   if (padThreeOn)
   {
-    midiNoteOn(0, VS1053_CLOSED_HI_HAT, 127);
+    midiNoteOn(0, VS1053_CLOSED_HI_HAT, 127, VS1053_MIDI);
     Serial.print("Percussion: ");
     Serial.println(percussionInstruments[VS1053_CLOSED_HI_HAT - INDEX_START_PERCUSSION].prettyName);
     padThreeOn = 0;
   }
   if (padFourOn)
   {
-    midiNoteOn(0, VS1053_CRASH_CYMBAL_1, 127);
+    midiNoteOn(0, VS1053_CRASH_CYMBAL_1, 127, VS1053_MIDI);
     Serial.print("Percussion: ");
     Serial.println(percussionInstruments[VS1053_CRASH_CYMBAL_1 - INDEX_START_PERCUSSION].prettyName);
     padFourOn = 0;
