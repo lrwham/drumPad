@@ -1,7 +1,7 @@
 //#include <Adafruit_VS1053.h>
 #include <vs1053_instruments.h>
 #include <vs1053_registers.h>
-#include <midi.h>
+#include <vs1053_midi.h>
 
 #define SERIAL_DEBUG_BAUD 9600
 #define MIDI_BAUD 31250
