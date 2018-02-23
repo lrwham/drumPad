@@ -71,13 +71,13 @@
 
 using namespace std;
 
-struct InstrumentVS1053
+struct 
 {
     int id;
     String prettyName;
-};
+} typedef InstrumentVS1053;
 
-struct InstrumentVS1053 percussionInstruments[NUM_PERCUSSION_INSTRUMENTS] = {
+const InstrumentVS1053 percussionInstruments[NUM_PERCUSSION_INSTRUMENTS] = {
     {VS1053_HIGH_Q, "High Q"},
     {VS1053_SLAP, "Slap"},
     {VS1053_SCRATCH_PUSH, "Scratch Push EXC7"},

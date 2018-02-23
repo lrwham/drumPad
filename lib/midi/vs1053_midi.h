@@ -6,11 +6,11 @@
 class VS1053_MIDI_Channel
 {
   public:
-    VS1053_MIDI_Channel(uint8_t chan, Uart* aSerialPort);
+    VS1053_MIDI_Channel(uint8_t chan, Stream& aSerialPort);
 
-    VS1053_MIDI_Channel(uint8_t chan, uint8_t volume, uint8_t bank, Uart* aSerialPort);
+    VS1053_MIDI_Channel(uint8_t chan, uint8_t volume, uint8_t bank, Stream& aSerialPort);
 
-    VS1053_MIDI_Channel(uint8_t chan, uint8_t volume, uint8_t bank, uint8_t instrument, Uart* aSerialPort);
+    VS1053_MIDI_Channel(uint8_t chan, uint8_t volume, uint8_t bank, uint8_t instrument, Stream& aSerialPort);
 
     void midiSetInstrument(uint8_t instrument);
 
@@ -24,7 +24,7 @@ class VS1053_MIDI_Channel
 
   private:
     uint8_t mChannel;
-    Uart* mSerialPort;
+    Stream& mSerialPort;
 };
 
 #endif // VS1053_MIDI_H
