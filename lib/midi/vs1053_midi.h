@@ -6,11 +6,13 @@
 class VS1053_MIDI_Channel
 {
   public:
-    VS1053_MIDI_Channel(uint8_t chan, Stream& aSerialPort);
+    VS1053_MIDI_Channel(uint8_t chan, HardwareSerial *aSerialPort);
 
-    VS1053_MIDI_Channel(uint8_t chan, uint8_t volume, uint8_t bank, Stream& aSerialPort);
+    VS1053_MIDI_Channel(uint8_t chan, uint8_t volume, uint8_t bank, HardwareSerial *aSerialPort);
 
-    VS1053_MIDI_Channel(uint8_t chan, uint8_t volume, uint8_t bank, uint8_t instrument, Stream& aSerialPort);
+    VS1053_MIDI_Channel(uint8_t chan, uint8_t volume, uint8_t bank, uint8_t instrument, HardwareSerial *aSerialPort);
+
+    VS1053_MIDI_Channel(uint8_t chan, uint8_t volume, uint8_t bank, uint8_t instrument);
 
     void midiSetInstrument(uint8_t instrument);
 
@@ -22,9 +24,11 @@ class VS1053_MIDI_Channel
 
     void midiNoteOff(uint8_t note, uint8_t velocity);
 
+    void begin(uint32_t baud);
+
   private:
     uint8_t mChannel;
-    Stream& mSerialPort;
+    HardwareSerial *mSerialPort;
 };
 
 #endif // VS1053_MIDI_H

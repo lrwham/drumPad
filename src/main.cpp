@@ -14,12 +14,12 @@
 #define PAD4_PIN 17
 
 #if defined(__AVR_ATmega32U4__) || defined(ARDUINO_SAMD_FEATHER_M0) || defined(TEENSYDUINO) || defined(ARDUINO_STM32_FEATHER)
-#define VS1053_MIDI Serial1
+#define VS1053_MIDI_SERIAL Serial1
 #elif defined(ESP32)
 HardwareSerial Serial1(2);
-#define VS1053_MIDI Serial1
+#define VS1053_MIDI_SERIAL Serial1
 #elif defined(ESP8266)
-#define VS1053_MIDI Serial
+#define VS1053_MIDI_SERIAL Serial
 #endif
 
 volatile bool padOneOn = 0;
@@ -44,7 +44,7 @@ void padFourISR()
   padFourOn = 1;
 }
 
-VS1053_MIDI_Channel channel0(0, 127, VS1053_BANK_DRUMS2, VS1053_ACOUSTIC_SNARE, VS1053_MIDI);
+VS1053_MIDI_Channel channel0(0, 127, VS1053_BANK_DRUMS2, VS1053_ACOUSTIC_SNARE, &VS1053_MIDI_SERIAL);
 
 void setup()
 {
@@ -54,7 +54,20 @@ void setup()
 
   Serial.println("VS1053 MIDI test");
 
-  VS1053_MIDI.begin(MIDI_BAUD); // MIDI uses a 'strange baud rate'
+  delay(1000);
+  Serial.println("VS1053 MIDI test");
+  delay(1000);
+  Serial.println("VS1053 MIDI test");
+  delay(1000);
+  Serial.println("VS1053 MIDI test");
+  delay(1000);
+  Serial.println("VS1053 MIDI test");
+  delay(1000);
+  Serial.println("VS1053 MIDI test");
+  delay(1000);
+  Serial.println("VS1053 MIDI test");
+
+  channel0.begin(MIDI_BAUD); // MIDI uses a 'strange baud rate'
 
   attachInterrupt(digitalPinToInterrupt(PAD1_PIN), padOneISR, RISING);
   attachInterrupt(digitalPinToInterrupt(PAD2_PIN), padTwoISR, RISING);
