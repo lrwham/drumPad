@@ -2,70 +2,91 @@
 #include <Arduino.h>
 //#include <Adafruit_VS1053.h>
 #include <vs1053_registers.h>
+#include <vs1053_instruments.h>
 
+#define DEFAULT_VOLUME 127
+#define DEFAULT_INSTRUMENT 25
+#define DEFAULT_BANK VS1053_BANK_MELODY
 
-void midiSetInstrument(uint8_t chan, uint8_t inst, Uart SerialPort)
+VS1053_MIDI_Channel::VS1053_MIDI_Channel(uint8_t aChannel, Uart* aSerialPort)
 {
-  if (chan > 15)
-    return;
-  inst--; // page 32 has instruments starting with 1 not 0 :(
-  if (inst > 127)
+  mChannel = aChannel;
+  mSerialPort = aSerialPort;
+  VS1053_MIDI_Channel::midiSetInstrument(DEFAULT_INSTRUMENT);
+  VS1053_MIDI_Channel::midiSetChannelVolume(DEFAULT_VOLUME);
+  VS1053_MIDI_Channel::midiSetChannelBank(DEFAULT_BANK);
+}
+
+VS1053_MIDI_Channel::VS1053_MIDI_Channel(uint8_t aChannel, uint8_t volume, uint8_t bank, Uart* aSerialPort)
+{
+  mChannel = aChannel;
+  mSerialPort = aSerialPort;
+  VS1053_MIDI_Channel::midiSetInstrument(DEFAULT_INSTRUMENT);
+  VS1053_MIDI_Channel::midiSetChannelVolume(volume);
+  VS1053_MIDI_Channel::midiSetChannelBank(bank);
+}
+
+VS1053_MIDI_Channel::VS1053_MIDI_Channel(uint8_t aChannel, uint8_t volume, uint8_t bank, uint8_t instrument, Uart* aSerialPort)
+{
+  mChannel = aChannel;
+  mSerialPort = aSerialPort;
+  VS1053_MIDI_Channel::midiSetInstrument(instrument);
+  VS1053_MIDI_Channel::midiSetChannelVolume(volume);
+  VS1053_MIDI_Channel::midiSetChannelBank(bank);
+}
+
+void VS1053_MIDI_Channel::midiSetInstrument(uint8_t instrument)
+{
+  instrument--; // page 32 has instruments starting with 1 not 0 :(
+  if (instrument > 127)
     return;
 
-  SerialPort.write(MIDI_CHAN_PROGRAM | chan);
+  mSerialPort->write(MIDI_CHAN_PROGRAM | mChannel);
   //delay(10);
-  SerialPort.write(inst);
+  mSerialPort->write(instrument);
   //delay(10);
 }
 
-void midiSetChannelVolume(uint8_t chan, uint8_t vol, Uart SerialPort)
+void VS1053_MIDI_Channel::midiSetChannelVolume(uint8_t volume)
 {
-  if (chan > 15)
-    return;
-  if (vol > 127)
+  if (volume > 127)
     return;
 
-  SerialPort.write(MIDI_CHAN_MSG | chan);
-  SerialPort.write(MIDI_CHAN_VOLUME);
-  SerialPort.write(vol);
+  mSerialPort->write(MIDI_CHAN_MSG | mChannel);
+  mSerialPort->write(MIDI_CHAN_VOLUME);
+  mSerialPort->write(volume);
 }
 
-void midiSetChannelBank(uint8_t chan, uint8_t bank, Uart SerialPort)
+void VS1053_MIDI_Channel::midiSetChannelBank(uint8_t bank)
 {
-  if (chan > 15)
-    return;
   if (bank > 127)
     return;
 
-  SerialPort.write(MIDI_CHAN_MSG | chan);
-  SerialPort.write((uint8_t)MIDI_CHAN_BANK);
-  SerialPort.write(bank);
+  mSerialPort->write(MIDI_CHAN_MSG | mChannel);
+  mSerialPort->write((uint8_t)MIDI_CHAN_BANK);
+  mSerialPort->write(bank);
 }
 
-void midiNoteOn(uint8_t chan, uint8_t n, uint8_t vel, Uart SerialPort)
+void VS1053_MIDI_Channel::midiNoteOn(uint8_t note, uint8_t velocity)
 {
-  if (chan > 15)
+  if (note > 127)
     return;
-  if (n > 127)
-    return;
-  if (vel > 127)
+  if (velocity > 127)
     return;
 
-  SerialPort.write(MIDI_NOTE_ON | chan);
-  SerialPort.write(n);
-  SerialPort.write(vel);
+  mSerialPort->write(MIDI_NOTE_ON | mChannel);
+  mSerialPort->write(note);
+  mSerialPort->write(velocity);
 }
 
-void midiNoteOff(uint8_t chan, uint8_t n, uint8_t vel, Uart SerialPort)
+void VS1053_MIDI_Channel::midiNoteOff(uint8_t note, uint8_t velocity)
 {
-  if (chan > 15)
+  if (note > 127)
     return;
-  if (n > 127)
-    return;
-  if (vel > 127)
+  if (velocity > 127)
     return;
 
-  SerialPort.write(MIDI_NOTE_OFF | chan);
-  SerialPort.write(n);
-  SerialPort.write(vel);
+  mSerialPort->write(MIDI_NOTE_OFF | mChannel);
+  mSerialPort->write(note);
+  mSerialPort->write(velocity);
 }
