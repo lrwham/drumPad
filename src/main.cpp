@@ -44,7 +44,7 @@ void padFourISR()
   padFourOn = 1;
 }
 
-VS1053_MIDI_Channel channel0(0, 127, VS1053_BANK_DRUMS2, VS1053_ACOUSTIC_SNARE, &Serial1);
+VS1053_MIDI_Channel channel0(0, 127, VS1053_BANK_DRUMS2, VS1053_ACOUSTIC_SNARE, VS1053_MIDI);
 
 void setup()
 {
